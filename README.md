@@ -1,2 +1,2 @@
 # Proyecto-Interdisciplinario
-Grupo 6: Gomez, Chodos, Suarez, Armendia y Ureña
+Grupo 4: Chodos, Suarez, Armendia, Ureña y Gomez
