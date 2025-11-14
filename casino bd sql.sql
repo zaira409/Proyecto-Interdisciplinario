@@ -111,13 +111,67 @@ insert into premios (id_apuesta, monto_ganado) values
 (1, 400),
 (3, 1200);
 
+-#Nombre del jugador y el nombre del juego en cada apuesta#-
+select j.nombre, g.nombre_juego
+from apuestas a
+inner join jugadores j on j.id_jugador = a.id_jugador
+inner join juegos g on g.id_juego = a.id_juego;
+
+-#Jugador y su nivel de membresía#-
+select j.nombre, j.apellido, m.nivel
+from jugadores j
+inner join membresias m on m.id_jugador = j.id_jugador;
+
+-#Jugadores con apuestas superiores a 100#-
+select j.nombre, j.apellido, a.monto
+from apuestas a
+inner join jugadores j on j.id_jugador = a.id_jugador
+where a.monto > 100;
+
+-#Listado de mesas con su juego y crupier#-
+select m.id_mesa, g.nombre_juego, c.nombre as crupier
+from mesas m
+inner join juegos g on g.id_juego = m.id_juego
+inner join crupieres c on c.id_crupier = g.id_crupier;
+
+-#Jugadores que retiraron plata#-
+select 
+    j.id_jugador,
+    j.nombre,
+    j.apellido,
+    t.id_transaccion,
+    t.monto,
+    t.fecha_hora
+from transacciones t
+inner join jugadores j on j.id_jugador = t.id_jugador
+where t.tipo = 'retiro';
+
+-#Crupieres y los puestos en los que trabajan#-
+select 
+    c.nombre,
+    c.apellido,
+    p.puesto
+from crupieres c
+inner join puestos p on p.id_puesto = c.id_puesto;
+
+-#Jugador que mas plata gano en el juego#-
 	select j.id_jugador, j.nombre, j.apellido, sum(p.monto_ganado) as total_ganado
 from jugadores j
 inner join apuestas a on a.id_jugador = j.id_jugador
 inner join premios p on p.id_apuesta = a.id_apuesta
-inner join juegos g on g.id_juego = a.id_juego
+inner join juegos g on g.id_jue--go = a.id_juego
 where g.nombre_juego = 'Ruleta'
 group by j.id_jugador, j.nombre, j.apellido
 order by total_ganado desc
 limit 1;
+
+-#Total de apuestas y promedio de plata por juego#-
+select g.id_juego, g.nombre_juego,
+       count(a.id_apuesta) as cantidad_apuestas,
+      avg(a.monto) as promedio_monto
+from juegos g
+inner join apuestas a on a.id_juego = g.id_juego
+group by g.id_juego, g.nombre_juego
+order by promedio_monto desc;
+
 
