@@ -72,44 +72,49 @@ foreign key (id_apuesta) references apuestas(id_apuesta)
 );
 
 insert into jugadores (nombre, apellido, dni, fecha_nacimiento, saldo) values
-('Juan', 'Pérez', '30555111', '1990-04-12', 1500),
-('María', 'Gómez', '29888777', '1988-09-21', 3200),
-('Carlos', 'Luna', '31544333', '1995-12-02', 800);
+('juan', 'pérez', '30555111', '1990-04-12', 1500),
+('maría', 'gómez', '29888777', '1988-09-21', 3200),
+('carlos', 'luna', '31544333', '1995-12-02', 800);
 
 insert into membresias (id_jugador, nivel, fecha_inicio, fecha_vencimiento) values
-(1, 'Oro', '2024-01-01', '2025-01-01'),
-(2, 'Plata', '2024-03-10', '2025-03-10'),
-(3, 'Bronce', '2024-04-05', '2025-04-05');
+(1, 'oro', '2024-01-01', '2025-01-01'),
+(2, 'plata', '2024-03-10', '2025-03-10'),
+(3, 'bronce', '2024-04-05', '2025-04-05');
+
+insert into transacciones (id_transaccion, id_jugador, tipo, monto, fecha_hora) values
+(1, 1, 'mercado pago', 200, '14:33'),
+(2, 2, 'efectivo', 500, '17:00'),
+(3, 3, 'tarjeta', 700, '15:25');
 
 insert into puestos (puesto) values
-('Ruleta'),
-('Blackjack'),
-('Poker');
+('ruleta'),
+('blackjack'),
+('poker');
 
 insert into crupieres (nombre, apellido, id_puesto, turno) values
-('Sofía', 'Martínez', 1, 'Mañana'),
-('Lucía', 'Fernández', 2, 'Tarde'),
-('Diego', 'Ramos', 3, 'Noche');
+('sofía', 'martínez', 1, 'mañana'),
+('lucía', 'fernández', 2, 'tarde'),
+('diego', 'ramos', 3, 'noche');
 
 insert into juegos (id_crupier, nombre_juego, tipo, min_apuesta, max_apuesta) values
-(1, 'Ruleta', 'Ruleta', 50, 5000),
-(2, 'Blackjack', 'Blackjack', 100, 3000),
-(3, 'Poker', 'Poker', 200, 20000);
+(1, 'ruleta', 'ruleta', 50, 5000),
+(2, 'blackjack', 'blackjack', 100, 3000),
+(3, 'poker', 'poker', 200, 20000);
 
 insert into mesas (id_juego, ubicacion, capacidad) values
-(1, 'Sala A', 6),
-(2, 'Sala B', 5),
-(3, 'Sala C', 8);
+(1, 'sala A', 6),
+(2, 'sala B', 5),
+(3, 'sala C', 8);
 
 insert into apuestas (id_jugador, id_juego, monto, fecha_hora, resultado) values
-(1, 1, 200, '2024-05-12 15:30:00', 'Ganó'),
-(1, 2, 100, '2024-05-12 16:10:00', 'Perdió'),
-(2, 3, 500, '2024-05-13 18:45:00', 'Ganó'),
-(3, 1, 50, '2024-05-14 20:00:00', 'Perdió');
+(1, 1, 200, '2024-05-12 15:30', 'ganó'),
+(1, 2, 100, '2024-05-12 16:10', 'perdió'),
+(2, 3, 500, '2024-05-13 18:45', 'ganó'),
+(3, 1, 50, '2024-05-14 20:00', 'perdió');
 
 insert into premios (id_apuesta, monto_ganado) values
 (1, 400),
-(3, 1200);
+(2, 1200);
 
 -#Nombre del jugador y el nombre del juego en cada apuesta#-
 select j.nombre, g.nombre_juego
@@ -160,7 +165,7 @@ from jugadores j
 inner join apuestas a on a.id_jugador = j.id_jugador
 inner join premios p on p.id_apuesta = a.id_apuesta
 inner join juegos g on g.id_jue--go = a.id_juego
-where g.nombre_juego = 'Ruleta'
+where g.nombre_juego = 'ruleta'
 group by j.id_jugador, j.nombre, j.apellido
 order by total_ganado desc
 limit 1;
@@ -173,5 +178,3 @@ from juegos g
 inner join apuestas a on a.id_juego = g.id_juego
 group by g.id_juego, g.nombre_juego
 order by promedio_monto desc;
-
-
