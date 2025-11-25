@@ -317,6 +317,13 @@ consulta8 = crear_consulta ("select g.id_juego, g.nombre_juego, count(a.id_apues
 tablaprevisional = crear_consulta("select * from jugadores;")
 
 
+# FUNCION DE AGREGAR NUEVO JUEGO (CON LA TABLA JUEGOS)
+def nuevo_juego(cursor,cnx, id_crupier,nombre_juego,tipo,min_apuesta,max_puesta):
+    sql = "INSERT INTO Jugadores (id_crupier, nombre_juego, tipo, min_apuesta, max_puesta)VALUES( %s, %s, %s, %s,%s)"
+    cursor.execute(sql,(id_crupier,nombre_juego,tipo,min_apuesta,max_puesta))
+    cnx.commit()
+    return cursor.lastrowid
+
 def menu_EmpleadoCasino():
     menu3=0
     while menu3==0:
@@ -330,8 +337,8 @@ def menu_EmpleadoCasino():
         print("6. Crupieres y los puestos en los que trabajan")
         print("7. Jugador que mas plata gano en el juego ")
         print("8. Total de apuestas y promedio de plata por juego  ")
-        print("9. Salir")
-       
+        print("9. Ingresar un nuevo juego") #FUNCION AGREGAR nUEVO JUEGO
+        print("10 Salir")
         o=int(input("Ingrese una opcion: "))
         if o==1:
             print(consulta1)
@@ -348,12 +355,34 @@ def menu_EmpleadoCasino():
         elif o==7:
             print(consulta7)
         elif o==8:
-            print(consulta8)
+            print(consulta8)  
         elif o==9:
+            try:
+                ("")
+                id_crupier = int(input("ID del Crupier: "))
+                print("")
+                nombre_juego = str(input("Nombre del juego : "))
+                print("")
+                tipo = str(input(" Tipo de juego : "))
+                print("")
+                min_apuesta = int(input("Minimo de apuesta :"))
+                print("")
+                max_apuesta = int(input("Maximo de apuesta :"))
+                print("")
+
+                nuevo_id_juego = nuevo_juego(cursor, cnx, id_crupier,nombre_juego, tipo, min_apuesta, max_apuesta)
+                print("")
+                print(f"Nuevo servicio con ID: {nuevo_id_juego}")
+                print("")  
+            except:
+                print("Ocurrio un error")
+            
+        elif o==10:
             return
             menu3 = 0
 
 
+#  OPCION NUMERO 3 (MENU CLIENTE NUEVO) ------------------
 def Consulta(nombre,apellido,dni,fecha_nacimiento,saldo):
     sql = "INSERT INTO Jugadores (nombre, apellido, dni, fecha_nacimiento, saldo)VALUES( %s, %s, %s, %s,%s)"
     cursor.execute(sql,(nombre,apellido,dni,fecha_nacimiento,saldo))
@@ -375,7 +404,6 @@ def Consulta3(id_jugador, tipo, monto, fecha_hora):
     return cursor.lastrowid
 
 
-#  OPCION NUMERO 3 (MENU CLIENTE NUEVO) ------------------
 def menu_ClienteNuevo():
     print("Nuevo jugador")
     #nombre, apellido, dni, fecha_nacimiento, saldo
@@ -416,3 +444,6 @@ menu1()
 
 
        
+
+       
+
